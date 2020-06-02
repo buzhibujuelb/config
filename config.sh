@@ -57,6 +57,13 @@ install_zsh(){
   else
     git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM}/plugins/zsh-autosuggestions
   fi
+  ln -sf .zshrc ~/.zshrc
+}
+
+install_vim(){
+  echo 'Installing zsh.'
+  sudo apt-get install vim -y
+  ln -sf .vimrc ~/.vimrc
 }
 
 main(){
@@ -68,6 +75,8 @@ main(){
   set_ssh
 
   install_zsh
+
+  install_vim
 
 }
 
