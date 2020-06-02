@@ -3,6 +3,7 @@
 
 config_apt(){
   if [[ "$(curl http://pv.sohu.com/cityjson?ie=utf-8)" == "*CN*" ]]
+  then
     echo '检测到 ip 位于国内，更新 apt 源中'
     wget https://tuna.moe/oh-my-tuna/oh-my-tuna.py
     sudo python3 oh-my-tuna.py --global
