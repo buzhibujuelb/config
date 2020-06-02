@@ -43,6 +43,7 @@ install_zsh(){
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
   fi
 
+  ZSH_CUSTOM="~/.oh-my-zsh/custom"
   if ! test -d "$ZSH_CUSTOM/themes/spaceship-prompt"
   then
     echo Installing spaceship-prompt
