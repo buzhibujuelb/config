@@ -80,11 +80,11 @@ main(){
 
   set_ssh
 
-  install_zsh
-
   install_vim
   install_git
 
+
+  install_zsh
 }
 
 main
