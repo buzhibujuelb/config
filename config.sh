@@ -67,6 +67,14 @@ install_vim(){
   sudo ln -sf .vimrc ~/.vimrc
 }
 
+install_git(){
+  echo 'Installing git.'
+  sudo apt-get install git -y
+  git config --global credential.helper store
+  git config --global user.email "1752862657@qq.com"
+  git config --global user.name "buzhibujue"
+}
+
 main(){
   config_apt
 
@@ -75,6 +83,7 @@ main(){
   install_zsh
 
   install_vim
+  install_git
 
 }
 
