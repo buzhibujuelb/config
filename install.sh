@@ -46,7 +46,7 @@ set_ssh(){
   if ! test -e ~/.ssh/authorized_keys ||  [[ $(grep "1752862657@qq.com" ~/.ssh/authorized_keys) == "" ]]
   then
     echo '设置 ssh 密钥中'
-    cat ./id_rsa.pub >> ~/.ssh/authorized_keys
+    cat ./data/id_rsa.pub >> ~/.ssh/authorized_keys
   fi
 }
 
