@@ -117,10 +117,10 @@ config_proxy(){
   git config --global http.proxy http://127.0.0.1:7890
   git config --global https.proxy http://127.0.0.1:7890
 
-  if ! (grep 'export http_proxy http://127.0.0.1:7890' ~/.zshrc  > /dev/null)
+  if ! (grep 'export http_proxy=http://127.0.0.1:7890' ~/.zshrc  > /dev/null)
   then
     echo 更换系统默认代理中
-    echo -e "export http_proxy http://127.0.0.1:7890\nexport https_proxy http://127.0.0.1:7890" >>  ~/.zshrc
+    echo -e "export http_proxy=http://127.0.0.1:7890\nexport https_proxy=http://127.0.0.1:7890" >>  ~/.zshrc
   fi
 
   if ! test -e /usr/bin/clash
