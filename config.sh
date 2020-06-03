@@ -43,7 +43,7 @@ install_zsh(){
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
   fi
 
-  #ZSH_CUSTOM="~/.oh-my-zsh/custom"
+  ZSH_CUSTOM="$HOME/.oh-my-zsh/custom"
   if ! test -d "$ZSH_CUSTOM/themes/spaceship-prompt"
   then
     echo Installing spaceship-prompt
@@ -56,15 +56,18 @@ install_zsh(){
     echo Installing zsh-autosuggestions
     git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM}/plugins/zsh-autosuggestions
   fi
-  sudo ln -sf .zshrc ~/.zshrc
+  ln -sf $path/.zshrc ~/.zshrc
 }
 
 install_vim(){
   echo 'Installing vim.'
   sudo apt-get install vim -y
-  curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  sudo ln -sf .vimrc ~/.vimrc
+  if ! test -e ~/.vim/autoload/plug.vim 
+  then
+      echo Installing plug.vim
+      curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  fi
+  ln -sf $path/.vimrc ~/.vimrc
 }
 
 install_git(){
@@ -76,6 +79,7 @@ install_git(){
 }
 
 main(){
+  path=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
   config_apt
 
   set_ssh
