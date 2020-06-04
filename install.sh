@@ -19,12 +19,12 @@ in_china(){
 }
 
 install(){
-  if [[ $(command -v $1 > /dev/null) ]]
+  if [[ $(command -v $1) ]]
   then
+    echo $1 already Install, skip.
+  else 
     echo $1 haven\'t install.
     sudo apt-get install $1 -y
-  else 
-    echo $1 already Install, skip.
   fi
 }
 
@@ -91,7 +91,7 @@ install_zsh(){
 }
 
 install_vim(){
-  install vim
+  install vim-gtk
   if ! test -e ~/.vim/autoload/plug.vim 
   then
     echo Downloading plug.vim
