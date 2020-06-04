@@ -80,7 +80,7 @@ let g:netrw_banner = 0
 se gfn=Consolas:h15
 
 se foldlevel=1000
-se clipboard+=unnamed,unnamedplus,autoselect,autoselectplus
+se clipboard=unnamed,unnamedplus,autoselect
 se foldmethod=syntax
 
 se sidescroll=1
