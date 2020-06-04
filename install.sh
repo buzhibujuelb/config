@@ -107,7 +107,7 @@ install_vim(){
     mkdir -p ~/.vim/autoload
     cp ./data/plug.vim ~/.vim/autoload/plug.vim
   fi
-  if ! test -e ~/.vimrc
+  if ! test -e ~/.vimrc || ! diff ~/.vimrc ./data/.vimrc > /dev/null
   then
    cp ./data/.vimrc ~/.vimrc
   fi
