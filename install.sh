@@ -19,7 +19,7 @@ in_china(){
 }
 
 install(){
-  if [[ $(command -v $1) ]]
+  if [[ $( dpkg-query --list | grep manpages-zh ) ]]
   then
     echo $1 already Install, skip.
   else 
@@ -97,10 +97,7 @@ install_zsh(){
 }
 
 install_vim(){
-  if [[ $(command -v $gvim) ]]
-  then
   install vim-gtk
-  fi
   if ! test -e ~/.vim/autoload/plug.vim 
   then
     echo Downloading plug.vim
@@ -162,10 +159,20 @@ config_proxy(){
 }
 
 set_locale(){
+
+  install manpages-zh
+  if ! ( grep "alias man='man -M /usr/share/man/zh_CN" ~/.zshrc > /dev/null )
+  then
+    echo -e "alias man='man -M /usr/share/man/zh_CN" >>  ~/.zshrc
+  fi
+
   if grep "en_US" /etc/default/locale > /dev/null
   then
+    echo 切换中文环境中
     sudo sed -i "s/en_US/zh_CN/g" /etc/default/locale
     sudo locale-gen zh_CN.UTF-8
+    echo 即将重启
+    sudo reboot
   fi
 }
 
@@ -176,14 +183,14 @@ main(){
 
   set_ssh
 
-  set_locale
-
   install_vim
   install_git
 
   install_zsh
 
   config_proxy
+
+  set_locale
 }
 
 main
