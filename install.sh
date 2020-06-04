@@ -164,7 +164,7 @@ config_proxy(){
 set_locale(){
   if grep "en_US" /etc/default/locale > /dev/null
   then
-    sudo sed "s/en_US/zh_CN/g" /etc/default/locale
+    sudo sed -i "s/en_US/zh_CN/g" /etc/default/locale
     sudo locale-gen zh_CN.UTF-8
   fi
 }
