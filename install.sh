@@ -49,6 +49,11 @@ set_ssh(){
     echo '设置 ssh 密钥中'
     cat ./data/id_rsa.pub >> ~/.ssh/authorized_keys
   fi
+  if ! test -e ~/.ssh/config
+  then
+    cp ./data/ssh_config ~/.ssh/config
+  fi
+
 }
 
 install_chrome(){
