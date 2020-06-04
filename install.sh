@@ -166,10 +166,11 @@ set_locale(){
     echo -e "alias man='man -M /usr/share/man/zh_CN" >>  ~/.zshrc
   fi
 
-  if grep "en_US" /etc/default/locale > /dev/null
+  if grep "en_US" /etc/default/locale > /dev/null || grep -e "^C" /etc/default/locale > /dev/null 
   then
     echo 切换中文环境中
     sudo sed -i "s/en_US/zh_CN/g" /etc/default/locale
+    sudo sed -i "s/^C/zh_CN/g" /etc/default/locale
     sudo locale-gen zh_CN.UTF-8
     echo 即将重启
     sudo reboot
