@@ -1,6 +1,8 @@
 call plug#begin('~/.vim/plugged')
   Plug 'hzchirs/vim-material'
-  Plug 'yianwillis/vimcdoc'
+  if has('linux')
+    Plug 'yianwillis/vimcdoc'
+  endif
 call plug#end()
 
 let g:material_style='palenight'
