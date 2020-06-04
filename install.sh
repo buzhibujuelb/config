@@ -159,11 +159,11 @@ config_proxy(){
 }
 
 set_locale(){
-
+  install locales
   install manpages-zh
-  if ! ( grep "alias man='man -M /usr/share/man/zh_CN" ~/.zshrc > /dev/null )
+  if ! ( grep "alias man='man -M /usr/share/man/zh_CN'" ~/.zshrc > /dev/null )
   then
-    echo -e "alias man='man -M /usr/share/man/zh_CN" >>  ~/.zshrc
+    echo -e "alias man='man -M /usr/share/man/zh_CN'" >>  ~/.zshrc
   fi
 
   if grep "en_US" /etc/default/locale > /dev/null || grep -e "=C" /etc/default/locale > /dev/null 
