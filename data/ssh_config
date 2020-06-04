@@ -1,0 +1,30 @@
+Host idsoj
+  User oj
+  Hostname 10.92.104.88
+  ForwardX11 yes
+
+Host dsoj
+  User oj
+  Hostname a.dsoj.tk
+  ForwardX11 yes
+
+Host itermux
+  User bei
+  Port 8022
+  Hostname 192.168.0.99
+  ForwardX11 yes
+
+Host termux
+  Hostname l.dsoj.tk 
+  Port 31014
+  ForwardX11 yes
+
+Host kr
+  User bei
+  Hostname kr.buzhibujue.cf
+  ForwardX11 yes
+
+Host hk
+  User bei
+  Hostname hk.buzhibujue.cf
+  ForwardX11 yes
