@@ -92,7 +92,10 @@ install_zsh(){
 }
 
 install_vim(){
+  if [[ $(command -v $gvim) ]]
+  then
   install vim-gtk
+  fi
   if ! test -e ~/.vim/autoload/plug.vim 
   then
     echo Downloading plug.vim
