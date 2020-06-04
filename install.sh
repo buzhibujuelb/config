@@ -43,6 +43,7 @@ config_apt(){
 }
 
 set_ssh(){
+  install xauth
   if ! test -e ~/.ssh/authorized_keys ||  [[ $(grep "1752862657@qq.com" ~/.ssh/authorized_keys) == "" ]]
   then
     echo '设置 ssh 密钥中'
