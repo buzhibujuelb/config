@@ -110,6 +110,7 @@ install_vim(){
   if ! test -e ~/.vimrc || ! diff ~/.vimrc ./data/.vimrc > /dev/null
   then
    cp ./data/.vimrc ~/.vimrc
+    vim -es -u ~/.vimrc -i NONE -c "PlugInstall" -c "qa" -V
   fi
 }
 
