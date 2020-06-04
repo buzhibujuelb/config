@@ -171,7 +171,6 @@ set_locale(){
 
 main(){
   get_ip
-  in_china
   path=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
   config_apt
 
