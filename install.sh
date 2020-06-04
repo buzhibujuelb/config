@@ -19,7 +19,7 @@ in_china(){
 }
 
 install(){
-  if [[ $( dpkg-query --list | grep manpages-zh ) ]]
+  if [[ $( dpkg-query --list | grep $1 ) ]]
   then
     echo $1 already Install, skip.
   else 
