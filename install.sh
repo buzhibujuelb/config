@@ -94,6 +94,7 @@ install_zsh(){
   if ! test -e ~/.zshrc; then cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc;fi
   if [[ !$( grep "spaceship" ~/.zshrc) ]]; then sed -i 's#ZSH_THEME="robbyrussell"#ZSH_THEME="spaceship"#g' ~/.zshrc;fi
   if [[ !$( grep "extract emoji z zsh-autosuggestions" ~/.zshrc) ]]; then sed -i 's#plugins=(git)#plugins=(git extract emoji z zsh-autosuggestions)#g' ~/.zshrc;fi
+  if [[ !$( grep "bindkey \^U backward-kill-line" ~/.zshrc) ]]; then echo "bindkey \^U backward-kill-line" >> ~/.zshrc;fi
 }
 
 install_vim(){
