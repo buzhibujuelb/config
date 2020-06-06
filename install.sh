@@ -178,6 +178,16 @@ set_locale(){
   fi
 }
 
+install_screen(){
+
+  install screen
+  if ! (grep 'term screen-256color' ~/.screenrc  > /dev/null)
+  then
+    echo "term screen-256color" >> ~/.screenrc
+  fi
+
+}
+
 main(){
   get_ip
   path=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
@@ -192,6 +202,7 @@ main(){
 
   config_proxy
 
+  install screen
   set_locale
 }
 
