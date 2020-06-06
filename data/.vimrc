@@ -1,8 +1,7 @@
+
 call plug#begin('~/.vim/plugged')
   Plug 'hzchirs/vim-material'
-  if has('linux')
-    Plug 'yianwillis/vimcdoc'
-  endif
+  Plug 'yianwillis/vimcdoc'
 call plug#end()
 
 let g:material_style='palenight'
@@ -37,7 +36,7 @@ se history=10000
 if has('win32')
   se mp=g++\ %<.cpp\ -o\ %<.exe\ -Wall\ -Wextra\ -Wno-parentheses\ -Wl,--stack=1000000000
 else 
-  se mp=g++\ %<.cpp\ -o\ %<.exe\ -Wall\ -Wextra\ -Wno-parentheses
+  se mp=g++\ %<.cpp\ -o\ %<\ -Wall\ -Wextra\ -Wno-parentheses
 endif
 
 function! SwitchRunPrg()
