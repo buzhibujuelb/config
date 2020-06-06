@@ -171,7 +171,7 @@ set_locale(){
   then
     echo 切换中文环境中
     sudo sed -i "s/en_US/zh_CN/g" /etc/default/locale
-    sudo sed -i "s/=C/zh_CN/g" /etc/default/locale
+    sudo sed -i "s/=C/=zh_CN/g" /etc/default/locale
     sudo locale-gen zh_CN.UTF-8
     echo 即将重启
     sudo reboot
