@@ -28,3 +28,14 @@ Host hk
   User bei
   Hostname hk.buzhibujue.cf
   ForwardX11 yes
+
+Host floj
+  User root
+  Hostname floj.tech
+  ForwardX11 yes
+
+Host ifloj
+  User root
+  Hostname 10.92.105.228
+  ForwardX11 yes
+

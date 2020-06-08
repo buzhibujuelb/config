@@ -94,6 +94,7 @@ install_zsh(){
   if ! test -e ~/.zshrc; then cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc;fi
   if [[ !$( grep "spaceship" ~/.zshrc) ]]; then sed -i 's#ZSH_THEME="robbyrussell"#ZSH_THEME="spaceship"#g' ~/.zshrc;fi
   if [[ !$( grep "extract emoji z zsh-autosuggestions" ~/.zshrc) ]]; then sed -i 's#plugins=(git)#plugins=(git extract emoji z zsh-autosuggestions)#g' ~/.zshrc;fi
+  if [[ !$( grep "bindkey \^U backward-kill-line" ~/.zshrc) ]]; then echo "bindkey \^U backward-kill-line" >> ~/.zshrc;fi
 }
 
 install_vim(){
@@ -159,7 +160,7 @@ config_proxy(){
 }
 
 set_locale(){
-  install locales
+  install language-pack-zh-hans
   install manpages-zh
   if ! ( grep "alias man='man -M /usr/share/man/zh_CN'" ~/.zshrc > /dev/null )
   then
@@ -169,12 +170,24 @@ set_locale(){
   if grep "en_US" /etc/default/locale > /dev/null || grep -e "=C" /etc/default/locale > /dev/null 
   then
     echo 切换中文环境中
+    export LC_ALL='zh_CN.utf8'
     sudo sed -i "s/en_US/zh_CN/g" /etc/default/locale
-    sudo sed -i "s/=C/zh_CN/g" /etc/default/locale
-    sudo locale-gen zh_CN.UTF-8
+    sudo sed -i "s/=C/=zh_CN/g" /etc/default/locale
+    sudo locale-gen
+    locale -a
     echo 即将重启
     sudo reboot
   fi
+}
+
+install_screen(){
+
+  install screen
+  if ! (grep 'term screen-256color' ~/.screenrc  > /dev/null)
+  then
+    echo "term screen-256color" >> ~/.screenrc
+  fi
+
 }
 
 main(){
@@ -191,6 +204,7 @@ main(){
 
   config_proxy
 
+  install screen
   set_locale
 }
 

@@ -1,8 +1,6 @@
 call plug#begin('~/.vim/plugged')
   Plug 'hzchirs/vim-material'
-  if has('linux')
-    Plug 'yianwillis/vimcdoc'
-  endif
+  Plug 'yianwillis/vimcdoc'
 call plug#end()
 
 let g:material_style='palenight'
@@ -37,7 +35,7 @@ se history=10000
 if has('win32')
   se mp=g++\ %<.cpp\ -o\ %<.exe\ -Wall\ -Wextra\ -Wno-parentheses\ -Wl,--stack=1000000000
 else 
-  se mp=g++\ %<.cpp\ -o\ %<.exe\ -Wall\ -Wextra\ -Wno-parentheses
+  se mp=g++\ %<.cpp\ -o\ %<\ -Wall\ -Wextra\ -Wno-parentheses
 endif
 
 function! SwitchRunPrg()
@@ -59,7 +57,7 @@ if has('win32')
 else
   nmap<F4> :!xdg-open .<Enter>
 endif
-  
+
 nmap<F5> :e!<Enter>
 nmap<F9> :w<Enter>:lmake<Enter>
 imap<F9> <Esc><F9>
@@ -79,7 +77,11 @@ se acd
 let g:netrw_banner = 0
 
 "se gfn=Fira\ Code:h13
-se gfn=Consolas:h15
+if has('win32')
+  se gfn=Consolas:h15
+else
+  se gfn=Consolas\ 15
+endif
 
 se foldlevel=1000
 se clipboard=unnamed,unnamedplus,autoselect
