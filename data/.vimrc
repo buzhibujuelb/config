@@ -1,4 +1,3 @@
-
 call plug#begin('~/.vim/plugged')
   Plug 'hzchirs/vim-material'
   Plug 'yianwillis/vimcdoc'
@@ -58,7 +57,7 @@ if has('win32')
 else
   nmap<F4> :!xdg-open .<Enter>
 endif
-  
+
 nmap<F5> :e!<Enter>
 nmap<F9> :w<Enter>:lmake<Enter>
 imap<F9> <Esc><F9>
@@ -78,7 +77,11 @@ se acd
 let g:netrw_banner = 0
 
 "se gfn=Fira\ Code:h13
-se gfn=Consolas:h15
+if has('win32')
+  se gfn=Consolas:h15
+else
+  se gfn=Consolas\ 15
+endif
 
 se foldlevel=1000
 se clipboard=unnamed,unnamedplus,autoselect
