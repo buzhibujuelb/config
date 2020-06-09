@@ -10,7 +10,7 @@ get_ip(){
 }
 
 in_china(){
-  if grep "China" ~/.ip.txt > /dev/null
+  if grep -q "China" ~/.ip.txt 
   then
     return 0
   else
@@ -105,7 +105,7 @@ install_vim(){
     mkdir -p ~/.vim/autoload
     cp ./data/plug.vim ~/.vim/autoload/plug.vim
   fi
-  if ! test -e ~/.vimrc || ! diff ~/.vimrc ./data/.vimrc > /dev/null
+  if ! test -e ~/.vimrc || ! diff -q ~/.vimrc ./data/.vimrc
   then
    cp ./data/.vimrc ~/.vimrc
     vim -es -u ~/.vimrc -i NONE -c "PlugInstall" -c "qa"
@@ -126,7 +126,7 @@ config_proxy(){
   git config --global http.proxy http://127.0.0.1:7890
   git config --global https.proxy http://127.0.0.1:7890
 
-  if ! (grep 'export http_proxy=http://127.0.0.1:7890' ~/.zshrc  > /dev/null)
+  if ! (grep -q 'export http_proxy=http://127.0.0.1:7890' ~/.zshrc )
   then
     echo 更换系统默认代理中
     echo -e "export http_proxy=http://127.0.0.1:7890\nexport https_proxy=http://127.0.0.1:7890" >>  ~/.zshrc
@@ -162,12 +162,12 @@ config_proxy(){
 set_locale(){
   install language-pack-zh-hans
   install manpages-zh
-  if ! ( grep "alias man='man -M /usr/share/man/zh_CN'" ~/.zshrc > /dev/null )
+  if ! ( grep -q "alias man='man -M /usr/share/man/zh_CN'" ~/.zshrc  )
   then
     echo -e "alias man='man -M /usr/share/man/zh_CN'" >>  ~/.zshrc
   fi
 
-  if grep "en_US" /etc/default/locale > /dev/null || grep -e "=C" /etc/default/locale > /dev/null 
+  if grep -q "en_US" /etc/default/locale  || grep -qe "=C" /etc/default/locale 
   then
     echo 切换中文环境中
     export LC_ALL='zh_CN.utf8'
@@ -183,7 +183,7 @@ set_locale(){
 install_screen(){
 
   install screen
-  if ! (grep 'term screen-256color' ~/.screenrc  > /dev/null)
+  if ! (grep -q 'term screen-256color' ~/.screenrc )
   then
     echo "term screen-256color" >> ~/.screenrc
   fi
