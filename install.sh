@@ -29,7 +29,7 @@ in_china(){
 install(){
   if [[ $( dpkg-query --list | grep $1 ) ]]
   then
-    echo -e $1 ${green}already Install, skip.${none}
+    echo -e $1 ${green}already install, skip.${none}
   else 
     echo -e $1 ${red}haven\'t install.${none}
     sudo apt-get install $1 -y
