@@ -167,14 +167,22 @@ set_locale(){
     echo -e "alias man='man -M /usr/share/man/zh_CN'" >>  ~/.zshrc
   fi
 
-  if grep -q "en_US" /etc/default/locale  || grep -qe "=C" /etc/default/locale 
+  flag=false
+  if ! diff -q /etc/locale.gen ./data/locale.gen
   then
-    echo 切换中文环境中
-    export LC_ALL='zh_CN.utf8'
-    sudo sed -i "s/en_US/zh_CN/g" /etc/default/locale
-    sudo sed -i "s/=C/=zh_CN/g" /etc/default/locale
+    echo 更换 locale.gen 中
+    sudo cp ./data/locale.gen /etc/locale.gen
     sudo locale-gen
-    locale -a
+    flag=true
+  fi
+  if ! diff -q /etc/default/locale ./data/locale
+  then
+    echo 更换 locale 中
+    sudo cp ./data/locale /etc/default/locale
+    flag=true
+  fi
+  if $flag
+  then
     echo 即将重启
     sudo reboot
   fi
