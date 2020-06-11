@@ -184,7 +184,7 @@ set_locale(){
   flag=false
   if ! diff -q /etc/locale.gen ./data/locale.gen
   then
-    echo -e ${red}更换 locale.gen 中$none}
+    echo -e ${red}更换 locale.gen 中${none}
     sudo cp ./data/locale.gen /etc/locale.gen
     sudo locale-gen
     flag=true
