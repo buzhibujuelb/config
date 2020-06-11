@@ -161,6 +161,7 @@ config_proxy(){
 
 set_locale(){
   install language-pack-zh-hans
+  install locales
   install manpages-zh
   if ! ( grep -q "alias man='man -M /usr/share/man/zh_CN'" ~/.zshrc  )
   then
