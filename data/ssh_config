@@ -11,7 +11,7 @@ Host dsoj
 Host itermux
   User bei
   Port 8022
-  Hostname 192.168.0.99
+  Hostname 192.168.0.100
   ForwardX11 yes
 
 Host termux
