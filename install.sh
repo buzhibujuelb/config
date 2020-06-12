@@ -37,7 +37,7 @@ install(){
 }
 
 config_apt(){
-  if ! $(grep -q "ustc.edu.cn" $PREFIX/etc/apt/sources.list)
+  if ! (grep -q "ustc.edu.cn" $PREFIX/etc/apt/sources.list)
   then
     echo -e "deb https://mirrors.ustc.edu.cn/termux stable main" > $PREFIX/etc/apt/sources.list
   fi
@@ -45,7 +45,7 @@ config_apt(){
 }
 
 set_ssh(){
-  if ! test -e ~/.ssh/authorized_keys ||  [[ ! $(grep -q "1752862657@qq.com" ~/.ssh/authorized_keys) ]]
+  if ! test -e ~/.ssh/authorized_keys ||  ! (grep -q "1752862657@qq.com" ~/.ssh/authorized_keys)
   then
     echo -e  ${red}设置 ssh 密钥中${none}
     cat ./data/id_rsa.pub >> ~/.ssh/authorized_keys
@@ -94,9 +94,9 @@ install_zsh(){
     git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM}/plugins/zsh-autosuggestions
   fi
   if ! test -e ~/.zshrc; then cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc;fi
-  if [[ !$( grep -q "spaceship" ~/.zshrc) ]]; then sed -i 's#ZSH_THEME="robbyrussell"#ZSH_THEME="spaceship"#g' ~/.zshrc;fi
-  if [[ !$( grep -q "extract emoji z zsh-autosuggestions" ~/.zshrc) ]]; then sed -i 's#plugins=(git)#plugins=(git extract emoji z zsh-autosuggestions)#g' ~/.zshrc;fi
-  if [[ !$( grep -q "bindkey \^U backward-kill-line" ~/.zshrc) ]]; then echo "bindkey \^U backward-kill-line" >> ~/.zshrc;fi
+  if ! grep -q "spaceship" ~/.zshrc ; then sed -i 's#ZSH_THEME="robbyrussell"#ZSH_THEME="spaceship"#g' ~/.zshrc;fi
+  if ! grep -q "extract emoji z zsh-autosuggestions" ~/.zshrc ; then sed -i 's#plugins=(git)#plugins=(git extract emoji z zsh-autosuggestions)#g' ~/.zshrc;fi
+  if ! grep -q "bindkey \^U backward-kill-line" ~/.zshrc ; then echo "bindkey \^U backward-kill-line" >> ~/.zshrc;fi
 }
 
 install_vim(){
