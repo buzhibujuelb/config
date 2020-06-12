@@ -44,7 +44,7 @@ config_apt(){
     then
       cp ./data/oh-my-tuna.py ~/oh-my-tuna.py
     fi
-    install python3
+    install python
     python3 ~/oh-my-tuna.py --global
   fi
   #apt-get update
@@ -52,7 +52,6 @@ config_apt(){
 }
 
 set_ssh(){
-  install xauth
   if ! test -e ~/.ssh/authorized_keys ||  [[ ! $(grep "1752862657@qq.com" ~/.ssh/authorized_keys) ]]
   then
     echo-e  ${red}设置 ssh 密钥中${none}
@@ -76,11 +75,11 @@ install_chrome(){
 
 install_zsh(){
   install zsh
-  if [[ $SHELL != "/bin/zsh" ]]
+  if [[ $SHELL != "/data/data/com.termux/files/usr/bin/zsh" ]]
   then
     echo -e ${yellow}Changing to zsh${none}
-    chsh -s /bin/zsh
-    chsh -s /bin/zsh root
+    chsh -s zsh
+    chsh -s zsh root
   fi
   if ! test -d ~/.oh-my-zsh
   then
@@ -108,7 +107,7 @@ install_zsh(){
 }
 
 install_vim(){
-  install vim-gtk
+  install vim
   if ! test -e ~/.vim/autoload/plug.vim 
   then
     echo -e ${yellow}Setting up${none} plug.vim
