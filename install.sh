@@ -1,5 +1,6 @@
 #!/bin/bash
 #author: buzhibujue
+set -euo pipefail
 
 red='\e[91m'
 green='\e[92m'
