@@ -5,6 +5,7 @@ Host idsoj
 
 Host dsoj
   User oj
+  Port 31014
   Hostname a.dsoj.tk
   ForwardX11 yes
 
@@ -31,6 +32,7 @@ Host hk
 
 Host floj
   User root
+  Port 6001
   Hostname floj.tech
   ForwardX11 yes
 
