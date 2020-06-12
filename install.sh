@@ -32,7 +32,7 @@ install(){
     echo -e $1 ${green}already install, skip.${none}
   else 
     echo -e $1 ${red}haven\'t install.${none}
-    sudo apt-get install $1 -y
+    apt-get install $1 -y
   fi
 }
 
@@ -45,10 +45,10 @@ config_apt(){
       cp ./data/oh-my-tuna.py ~/oh-my-tuna.py
     fi
     install python3
-    sudo python3 ~/oh-my-tuna.py --global
+    python3 ~/oh-my-tuna.py --global
   fi
-  #sudo apt-get update
-  #sudo apt-get upgrade -y
+  #apt-get update
+  #apt-get upgrade -y
 }
 
 set_ssh(){
@@ -67,9 +67,9 @@ set_ssh(){
 }
 
 install_chrome(){
-  sudo wget https://repo.fdzh.org/chrome/google-chrome.list -P /etc/apt/sources.list.d/
-  wget -q -O - https://dl.google.com/linux/linux_signing_key.pub  | sudo apt-key add -
-  sudo apt-get update
+  wget https://repo.fdzh.org/chrome/google-chrome.list -P /etc/apt/sources.list.d/
+  wget -q -O - https://dl.google.com/linux/linux_signing_key.pub  | apt-key add -
+  apt-get update
 
   install goolge-chrome-stable
 }
@@ -80,7 +80,7 @@ install_zsh(){
   then
     echo -e ${yellow}Changing to zsh${none}
     chsh -s /bin/zsh
-    sudo chsh -s /bin/zsh root
+    chsh -s /bin/zsh root
   fi
   if ! test -d ~/.oh-my-zsh
   then
@@ -93,7 +93,7 @@ install_zsh(){
   then
     echo -e ${red}Installing spaceship-prompt${none}
     git clone https://github.com/denysdovhan/spaceship-prompt.git "$ZSH_CUSTOM/themes/spaceship-prompt"
-    sudo ln -s "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh-theme" "$ZSH_CUSTOM/themes/spaceship.zsh-theme"
+    ln -s "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh-theme" "$ZSH_CUSTOM/themes/spaceship.zsh-theme"
   fi
 
   if ! test -d ${ZSH_CUSTOM}/plugins/zsh-autosuggestions
@@ -152,8 +152,8 @@ config_proxy(){
   if ! test -e /etc/systemd/system/clash.service
   then
     echo -e ${yellow}正在配置 clash 服务${none}
-    sudo cp ./data/clash.service /etc/systemd/system/clash.service
-    sudo sed -i "s#/home/oj#$HOME#g" /etc/systemd/system/clash.service
+    cp ./data/clash.service /etc/systemd/system/clash.service
+    sed -i "s#/home/oj#$HOME#g" /etc/systemd/system/clash.service
     systemctl daemon-reload
   fi
 
@@ -166,8 +166,8 @@ config_proxy(){
   if [[ $( systemctl is-enabled  clash | grep enabled ) == "" ]]
   then
     echo -e ${yellow}正在配置 clash 开机自启动${none}
-    sudo systemctl enable clash
-    sudo systemctl start clash
+    systemctl enable clash
+    systemctl start clash
   fi
 
 }
@@ -186,20 +186,20 @@ set_locale(){
   if ! diff -q /etc/locale.gen ./data/locale.gen
   then
     echo -e ${red}更换 locale.gen 中${none}
-    sudo cp ./data/locale.gen /etc/locale.gen
-    sudo locale-gen
+    cp ./data/locale.gen /etc/locale.gen
+    locale-gen
     flag=true
   fi
   if ! diff -q /etc/default/locale ./data/locale
   then
     echo -e ${red}更换 locale 中${none}
-    sudo cp ./data/locale /etc/default/locale
+    cp ./data/locale /etc/default/locale
     flag=true
   fi
   if $flag
   then
     echo -e ${red}即将重启${none}
-    sudo reboot
+    reboot
   fi
 }
 
@@ -227,13 +227,13 @@ main(){
 
   install_zsh
 
-  config_proxy
+#  config_proxy
 
   install screen
 
-  install locate
+  install mlocate
 
-  set_locale
+#  set_locale
 
 }
 
