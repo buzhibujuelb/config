@@ -45,7 +45,7 @@ config_apt(){
       cp ./data/oh-my-tuna.py ~/oh-my-tuna.py
     fi
     install python
-    python3 ~/oh-my-tuna.py --global
+    python ~/oh-my-tuna.py --global
   fi
   #apt-get update
   #apt-get upgrade -y
