@@ -37,18 +37,11 @@ install(){
 }
 
 config_apt(){
-  if in_china
+  if ! $(grep -q "ustc.edu.cn" $PREFIX/etc/apt/sources.list)
   then
-    echo -e ${yellow}'检测到 ip 位于国内，更新 apt 源为 tuna 中'${none}
-    if ! test -e ~/oh-my-tuna.py 
-    then
-      cp ./data/oh-my-tuna.py ~/oh-my-tuna.py
-    fi
-    install python
-    python ~/oh-my-tuna.py --global
+    echo -e "deb https://mirrors.ustc.edu.cn/termux stable main" > $PREFIX/etc/apt/sources.list
   fi
-  #apt-get update
-  #apt-get upgrade -y
+  pkg update
 }
 
 set_ssh(){
@@ -131,77 +124,6 @@ install_git(){
   git config --global credential.helper store
 }
 
-config_proxy(){
-  if ! in_china ; then return ; fi
-  echo -e ${yellow}配置 proxy中${none}
-  git config --global http.proxy http://127.0.0.1:7890
-  git config --global https.proxy http://127.0.0.1:7890
-
-  if ! (grep -q 'export http_proxy=http://127.0.0.1:7890' ~/.zshrc )
-  then
-    echo -e ${yellow}更换系统默认代理中${none}
-    echo -e "export http_proxy=http://127.0.0.1:7890\nexport https_proxy=http://127.0.0.1:7890" >>  ~/.zshrc
-  fi
-
-  if ! test -e /usr/bin/clash
-  then
-   cp ./data/clash /usr/bin/clash
-  fi
-
-  if ! test -e /etc/systemd/system/clash.service
-  then
-    echo -e ${yellow}正在配置 clash 服务${none}
-    cp ./data/clash.service /etc/systemd/system/clash.service
-    sed -i "s#/home/oj#$HOME#g" /etc/systemd/system/clash.service
-    systemctl daemon-reload
-  fi
-
-  if ! test -d  ~/.config/clash || ! test -e ~/.config/clash/config.yaml
-  then
-    echo -e ${yellow}正在配置 clash.yaml${none}
-    cp ./data/clash.yaml ~/.config/clash/config.yaml
-  fi
-
-  if [[ $( systemctl is-enabled  clash | grep enabled ) == "" ]]
-  then
-    echo -e ${yellow}正在配置 clash 开机自启动${none}
-    systemctl enable clash
-    systemctl start clash
-  fi
-
-}
-
-set_locale(){
-  install language-pack-zh-hans
-  install locales
-  install manpages-zh
-  if ! ( grep -q "alias man='man -M /usr/share/man/zh_CN'" ~/.zshrc  )
-  then
-    echo -e ${yellow}正在配置 alias manpages-zh ${none}
-    echo -e "alias man='man -M /usr/share/man/zh_CN'" >>  ~/.zshrc
-  fi
-
-  flag=false
-  if ! diff -q /etc/locale.gen ./data/locale.gen
-  then
-    echo -e ${red}更换 locale.gen 中${none}
-    cp ./data/locale.gen /etc/locale.gen
-    locale-gen
-    flag=true
-  fi
-  if ! diff -q /etc/default/locale ./data/locale
-  then
-    echo -e ${red}更换 locale 中${none}
-    cp ./data/locale /etc/default/locale
-    flag=true
-  fi
-  if $flag
-  then
-    echo -e ${red}即将重启${none}
-    reboot
-  fi
-}
-
 install_screen(){
 
   install screen
@@ -226,13 +148,9 @@ main(){
 
   install_zsh
 
-#  config_proxy
-
   install screen
 
   install mlocate
-
-#  set_locale
 
 }
 
