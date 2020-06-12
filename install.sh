@@ -55,12 +55,12 @@ set_ssh(){
   install xauth
   if ! test -e ~/.ssh/authorized_keys ||  [[ ! $(grep "1752862657@qq.com" ~/.ssh/authorized_keys) ]]
   then
-    echo-e  ${red}设置 ssh 密钥中${none}
+    echo -e  ${red}设置 ssh 密钥中${none}
     cat ./data/id_rsa.pub >> ~/.ssh/authorized_keys
   fi
   if ! test -e ~/.ssh/config
   then
-    echo-e  ${red}设置 ssh config${none}
+    echo -e  ${red}设置 ssh config${none}
     cp ./data/ssh_config ~/.ssh/config
   fi
 
