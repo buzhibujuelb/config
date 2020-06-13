@@ -171,6 +171,7 @@ config_proxy(){
     sudo systemctl start clash
   fi
 
+  pip3 config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
 }
 
 set_locale(){
@@ -215,6 +216,17 @@ install_screen(){
 
 }
 
+install_bat(){
+  if [[ ! $(which bat) ]]
+  then
+    sudo dpkg -i data/bat.deb
+  fi
+  if ! ( grep -q "alias cat=bat" ~/.zshrc  )
+  then
+    echo "alias cat=bat" >> ~/.zshrc
+  fi
+}
+
 main(){
   get_ip
   path=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
@@ -233,6 +245,8 @@ main(){
   install screen
 
   install locate
+
+  install_bat
 
   set_locale
 
