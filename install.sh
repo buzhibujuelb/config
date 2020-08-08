@@ -108,6 +108,7 @@ install_zsh(){
   if ! grep -q "spaceship" ~/.zshrc ; then sed -i 's#ZSH_THEME="robbyrussell"#ZSH_THEME="spaceship"#g' ~/.zshrc;fi
   if ! grep -q "extract emoji z zsh-autosuggestions" ~/.zshrc ; then sed -i 's#plugins=(git)#plugins=(git extract emoji z zsh-autosuggestions)#g' ~/.zshrc;fi
   if ! grep -q "bindkey \\\\^U backward-kill-line" ~/.zshrc ; then echo "bindkey \^U backward-kill-line" >> ~/.zshrc;fi
+  if ! grep -q "setopt nonomatch" ~/.zshrc ; then echo "setopt nonomatch" >> ~/.zshrc;fi
 }
 
 install_vim(){
