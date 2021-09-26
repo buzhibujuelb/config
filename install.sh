@@ -13,6 +13,7 @@ none='\e[0m'
 get_ip(){
   if ! test -e ~/.ip.txt
   then
+    install curl
     echo 保存本机ip 到 ~/.ip.txt
     curl -s http://ip-api.com/json/ -o ~/.ip.txt
   fi
@@ -55,6 +56,7 @@ config_apt(){
 }
 
 set_ssh(){
+  mkdir -p ~/.ssh
   install xauth
   if ! test -e ~/.ssh/authorized_keys ||  ! (grep -q "1752862657@qq.com" ~/.ssh/authorized_keys)
   then
@@ -99,14 +101,23 @@ install_zsh(){
     sudo ln -s "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh-theme" "$ZSH_CUSTOM/themes/spaceship.zsh-theme"
   fi
 
+
   if ! test -d ${ZSH_CUSTOM}/plugins/zsh-autosuggestions
   then
     echo -e ${red}Installing zsh-autosuggestions${none}
     git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM}/plugins/zsh-autosuggestions
   fi
+
+
+  if ! test -d ${ZSH_CUSTOM}/plugins/zsh-syntax-highlighting
+  then
+    echo -e ${red}Installing zsh-syntax-highlighting${none}
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM}/plugins/zsh-syntax-highlighting
+  fi
+
   if ! test -e ~/.zshrc; then cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc;fi
   if ! grep -q "spaceship" ~/.zshrc ; then sed -i 's#ZSH_THEME="robbyrussell"#ZSH_THEME="spaceship"#g' ~/.zshrc;fi
-  if ! grep -q "extract emoji z zsh-autosuggestions" ~/.zshrc ; then sed -i 's#plugins=(git)#plugins=(git extract emoji z zsh-autosuggestions)#g' ~/.zshrc;fi
+  if ! grep -q "extract emoji z zsh-autosuggestions zsh-syntax-highlighting" ~/.zshrc ; then sed -i 's#plugins=(git)#plugins=(git extract emoji z zsh-autosuggestions zsh-syntax-highlighting)#g' ~/.zshrc;fi
   if ! grep -q "bindkey \\\\^U backward-kill-line" ~/.zshrc ; then echo "bindkey \^U backward-kill-line" >> ~/.zshrc;fi
   if ! grep -q "setopt nonomatch" ~/.zshrc ; then echo "setopt nonomatch" >> ~/.zshrc;fi
 }
@@ -137,6 +148,7 @@ install_git(){
 }
 
 config_proxy(){
+:<<!
   if ! in_china ; then return ; fi
   echo -e ${yellow}配置 proxy中${none}
   git config --global http.proxy http://127.0.0.1:7890
@@ -147,10 +159,9 @@ config_proxy(){
     echo -e ${yellow}更换系统默认代理中${none}
     echo -e "export http_proxy=http://127.0.0.1:7890\nexport https_proxy=http://127.0.0.1:7890" >>  ~/.zshrc
   fi
-
   if ! test -e /usr/bin/clash
   then
-   cp ./data/clash /usr/bin/clash
+   sudo cp ./data/clash /usr/bin/clash
   fi
 
   if ! test -e /etc/systemd/system/clash.service
@@ -173,6 +184,8 @@ config_proxy(){
     sudo systemctl enable clash
     sudo systemctl start clash
   fi
+!
+  install python3-pip
 
   pip3 config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
 }
