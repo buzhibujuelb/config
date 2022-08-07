@@ -9,6 +9,7 @@ colorscheme vim-material
 
 "source $VIMRUNTIME/mswin.vim
 
+se undodir=~/.vim/undo
 se tgc
 
 se nu
@@ -45,12 +46,16 @@ function! SwitchRunPrg()
     else
       nmap<F10> :!time ./%<<Enter>
     endif
-  elseif &filetype == 'python'
+   endif
+  if &filetype == 'python'
     nmap<F10> :!python %<Enter>
+  endif
+  if &filetype == 'dosbatch'
+    nmap<F10> :!start %<Enter><cr>
   endif
 endfunction
 
-autocmd BufNewFile,BufRead *.py,*.cpp :call SwitchRunPrg() 
+autocmd BufNewFile,BufRead,BufEnter *.py,*.cpp,*.c,*.cmd :call SwitchRunPrg() 
 
 if has('win32')
   nmap<F4> :!start explorer .<Enter>
