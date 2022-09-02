@@ -235,7 +235,10 @@ install_screen(){
 install_bat(){
   if [[ ! $(which bat) ]]
   then
-    sudo dpkg -i data/bat.deb
+    install bat
+    mkdir -p ~/.local/bin
+    ln -s /usr/bin/batcat ~/.local/bin/bat
+
   fi
   if ! ( grep -q "alias cat=bat" ~/.zshrc  )
   then
