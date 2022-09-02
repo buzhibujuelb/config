@@ -2,3 +2,8 @@ Host us
   User bei
   Hostname us.buzhibujue.cf
   ForwardX11 yes
+
+Host gz
+  User bei
+  Hostname gz.buzhibujue.cf
+  ForwardX11 yes
