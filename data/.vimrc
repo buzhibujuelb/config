@@ -33,18 +33,14 @@ se nowrap
 
 se history=10000
 
-if has('win32')
-  se mp=g++\ %<.cpp\ -o\ %<.exe\ -Wall\ -Wextra\ -Wno-parentheses\ -Wl,--stack=1000000000
-else 
-  se mp=g++\ %<.cpp\ -o\ %<\ -Wall\ -Wextra\ -Wno-parentheses
-endif
-
 function! SwitchRunPrg()
   if &filetype == 'cpp'
     if has('win32') 
       nmap<F10> :!start cmd /c "%<.exe&echo.&echo.______&size -d %<.exe&echo.&pause"<Enter><cr>
+      se mp=g++\ %<.cpp\ -o\ %<.exe\ -Wall\ -Wextra\ -Wno-parentheses\ -Wl,--stack=1000000000
     else
       nmap<F10> :!time ./%<<Enter>
+      se mp=g++\ %<.cpp\ -o\ %<\ -Wall\ -Wextra\ -Wno-parentheses
     endif
    endif
   if &filetype == 'python'
@@ -53,9 +49,17 @@ function! SwitchRunPrg()
   if &filetype == 'dosbatch'
     nmap<F10> :!start %<Enter><cr>
   endif
+  if &filetype == 'java'
+    se mp=javac\ %
+    if has('win32') 
+      nmap<F10> :!start cmd /c java %< &echo.&echo.______&echo.&pause<Enter>
+    else
+      nmap<F10> :!time java ./%<<Enter>
+    endif
+   endif
 endfunction
 
-autocmd BufNewFile,BufRead,BufEnter *.py,*.cpp,*.c,*.cmd :call SwitchRunPrg() 
+autocmd BufNewFile,BufRead,BufEnter *.java,*.py,*.cpp,*.c,*.cmd :call SwitchRunPrg() 
 
 if has('win32')
   nmap<F4> :!start explorer .<Enter>
@@ -98,5 +102,3 @@ se sidescrolloff=20
 if has('gui_running')
   se go=""
 endif
-
-
