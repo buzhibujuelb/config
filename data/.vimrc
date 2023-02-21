@@ -49,6 +49,11 @@ function! SwitchRunPrg()
   if &filetype == 'dosbatch'
     nmap<F10> :!start %<Enter><cr>
   endif
+  if &filetype == 'asm'
+    se ft =masm
+    se ts=4
+    se sts=4
+  endif
   if &filetype == 'java'
     se mp=javac\ %
     if has('win32') 
@@ -59,7 +64,7 @@ function! SwitchRunPrg()
    endif
 endfunction
 
-autocmd BufNewFile,BufRead,BufEnter *.java,*.py,*.cpp,*.c,*.cmd :call SwitchRunPrg() 
+autocmd BufNewFile,BufRead,BufEnter *.java,*.py,*.cpp,*.c,*.cmd,*.asm :call SwitchRunPrg() 
 
 if has('win32')
   nmap<F4> :!start explorer .<Enter>
