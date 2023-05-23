@@ -1,6 +1,7 @@
 call plug#begin('~/.vim/plugged')
   Plug 'hzchirs/vim-material'
   Plug 'yianwillis/vimcdoc'
+  Plug 'ojroques/vim-oscyank', {'branch': 'main'}
 call plug#end()
 
 let g:material_style='palenight'
@@ -102,3 +103,7 @@ se sidescrolloff=20
 if has('gui_running')
   se go=""
 endif
+
+nmap <leader>c <Plug>OSCYankOperator
+nmap <leader>cc <leader>c_
+vmap <leader>c <Plug>OSCYankVisual
