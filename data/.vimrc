@@ -35,6 +35,15 @@ se nowrap
 se history=10000
 
 function! SwitchRunPrg()
+  if &filetype == 'c'
+    if has('win32') 
+      nmap<F10> :!start cmd /c "%<.exe&echo.&echo.______&size -d %<.exe&echo.&pause"<Enter><cr>
+      se mp=gcc\ %<.c\ -o\ %<.exe\ -Wall\ -Wextra\ -Wno-parentheses\ -Wl,--stack=1000000000
+    else
+      nmap<F10> :!time ./%<<Enter>
+      se mp=gcc\ %<.c\ -o\ %<\ -Wall\ -Wextra\ -Wno-parentheses
+    endif
+   endif
   if &filetype == 'cpp'
     if has('win32') 
       nmap<F10> :!start cmd /c "%<.exe&echo.&echo.______&size -d %<.exe&echo.&pause"<Enter><cr>
@@ -50,6 +59,11 @@ function! SwitchRunPrg()
   if &filetype == 'dosbatch'
     nmap<F10> :!start %<Enter><cr>
   endif
+  if &filetype == 'asm'
+    se ft =masm
+    se ts=4
+    se sts=4
+  endif
   if &filetype == 'java'
     se mp=javac\ %
     if has('win32') 
@@ -60,7 +74,7 @@ function! SwitchRunPrg()
    endif
 endfunction
 
-autocmd BufNewFile,BufRead,BufEnter *.java,*.py,*.cpp,*.c,*.cmd :call SwitchRunPrg() 
+autocmd BufNewFile,BufRead,BufEnter *.java,*.py,*.cpp,*.c,*.cmd,*.asm :call SwitchRunPrg() 
 
 if has('win32')
   nmap<F4> :!start explorer .<Enter>
