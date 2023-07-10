@@ -81,7 +81,7 @@ install_chrome(){
 
 install_zsh(){
   install zsh
-  if [[ $SHELL != "/bin/zsh" ]]
+  if [[ $SHELL != *"zsh" ]]
   then
     echo -e ${yellow}Changing to zsh${none}
     chsh -s /bin/zsh
@@ -240,9 +240,9 @@ install_bat(){
     ln -s /usr/bin/batcat ~/.local/bin/bat
 
   fi
-  if ! ( grep -q "alias cat=bat" ~/.zshrc  )
+  if ! ( grep -q "alias cat=batcat" ~/.zshrc  )
   then
-    echo "alias cat=bat" >> ~/.zshrc
+    echo "alias cat=batcat" >> ~/.zshrc
   fi
 }
 
