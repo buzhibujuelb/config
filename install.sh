@@ -235,7 +235,7 @@ install_screen(){
 install_bat(){
   if [[ ! $(which bat) ]]
   then
-    install bat
+    sudo apt-get install bat -y
     mkdir -p ~/.local/bin
     ln -s /usr/bin/batcat ~/.local/bin/bat
 
