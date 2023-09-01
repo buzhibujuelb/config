@@ -194,6 +194,7 @@ set_locale(){
   install language-pack-zh-hans
   install locales
   install manpages-zh
+  sudo apt install fonts-noto-cjk -y
   if ! ( grep -q "alias man='man -M /usr/share/man/zh_CN'" ~/.zshrc  )
   then
     echo -e ${yellow}正在配置 alias manpages-zh ${none}
