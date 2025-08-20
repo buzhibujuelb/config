@@ -23,6 +23,9 @@ se noswf
 se mouse=a
 syntax on 
 
+se ignorecase    
+se scs
+
 se expandtab
 se sw=2
 se ts=2

@@ -124,6 +124,7 @@ install_zsh(){
 
 install_vim(){
   install vim-gtk
+  mkdir -p ~/.vim/undo
   if ! test -e ~/.vim/autoload/plug.vim 
   then
     echo -e ${yellow}Setting up${none} plug.vim
