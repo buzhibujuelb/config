@@ -46,7 +46,11 @@ function! SwitchRunPrg()
       se mp=gcc\ %<.c\ -o\ %<.exe\ -Wall\ -Wextra\ -Wno-parentheses\ -Wl,--stack=1000000000
     else
       nnoremap <silent> <F10> :call RunWithDivider('./%<')<CR>
-      se mp=gcc\ %<.c\ -o\ %<\ -Wall\ -Wextra\ -Wno-parentheses
+      if has('macunix')
+        se mp=/opt/homebrew/bin/gcc-15\ %<.c\ -o\ %<\ -Wall\ -Wextra\ -Wno-parentheses
+      else
+        se mp=gcc\ %<.c\ -o\ %<\ -Wall\ -Wextra\ -Wno-parentheses
+      endif
     endif
    endif
   if &filetype == 'cpp'
@@ -55,7 +59,11 @@ function! SwitchRunPrg()
       se mp=g++\ %<.cpp\ -o\ %<.exe\ -Wall\ -Wextra\ -Wno-parentheses\ -Wl,--stack=1000000000
     else
       nnoremap <silent> <F10> :call RunWithDivider('./%<')<CR>
-      se mp=g++\ %<.cpp\ -o\ %<\ -Wall\ -Wextra\ -Wno-parentheses
+      if has('macunix')
+        se mp=/opt/homebrew/bin/g++-15\ %<.cpp\ -o\ %<\ -Wall\ -Wextra\ -Wno-parentheses
+      else
+        se mp=g++\ %<.cpp\ -o\ %<\ -Wall\ -Wextra\ -Wno-parentheses
+      endif
     endif
    endif
   if &filetype == 'python'
@@ -128,7 +136,11 @@ nmap <leader>cc <leader>c_
 vmap <leader>c <Plug>OSCYankVisual
 
 let g:easycomplete_tabnine_enable = 1
-let g:easycomplete_lsp_server = {'cpp': '/usr/bin/clangd'}
+if has('macunix')
+  let g:easycomplete_lsp_server = {'cpp': expand('~/.local/bin/clangd-gcc')}
+else
+  let g:easycomplete_lsp_server = {'cpp': '/usr/bin/clangd'}
+endif
 " Tabnine 行内提醒，默认值 0
 let g:easycomplete_tabnine_suggestion = 0
 " Using nerdfont for lsp icons, default is 0

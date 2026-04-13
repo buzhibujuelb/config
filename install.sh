@@ -374,48 +374,97 @@ install_vim() {
   if [[ ! -f ~/.vimrc ]] || ! diff -q ~/.vimrc "$SCRIPT_DIR/data/.vimrc" >/dev/null 2>&1; then
     log "Setting up .vimrc" "$yellow"
     cp "$SCRIPT_DIR/data/.vimrc" ~/.vimrc
-    eval "$vim_cmd -u ~/.vimrc -i NONE -c 'PlugInstall' -c 'qa'"
+    if [[ -t 0 && -t 1 ]]; then
+      eval "$vim_cmd -u ~/.vimrc -i NONE -c 'PlugInstall' -c 'qa'"
+    else
+      log "Skipping PlugInstall in non-interactive mode. Run :PlugInstall inside Vim later." "$magenta"
+    fi
   fi
 }
 
-install_macos_gcc_bits_header() {
+configure_macos_cpp_toolchain() {
+  if [[ "$OS" != "macos" ]]; then
+    return
+  fi
+
+  mkdir -p ~/.local/bin
+  mkdir -p ~/.config/clangd
+  mkdir -p ~/Library/Preferences/clangd
+
+  ensure_line ~/.zshrc 'export PATH="$HOME/.local/bin:$PATH"'
+  ensure_line ~/.zshrc 'alias gcc=/opt/homebrew/bin/gcc-15'
+  ensure_line ~/.zshrc 'alias g++=/opt/homebrew/bin/g++-15'
+  ensure_line ~/.zshrc 'alias cc=/opt/homebrew/bin/gcc-15'
+  ensure_line ~/.zshrc 'alias c++=/opt/homebrew/bin/g++-15'
+  ensure_line ~/.zshrc 'export CC=/opt/homebrew/bin/gcc-15'
+  ensure_line ~/.zshrc 'export CXX=/opt/homebrew/bin/g++-15'
+
+  cat > ~/.local/bin/clangd-gcc <<'EOF'
+#!/bin/bash
+exec /usr/bin/clangd \
+  --query-driver=/opt/homebrew/bin/g++-15,/opt/homebrew/bin/gcc-15 \
+  "$@"
+EOF
+  chmod +x ~/.local/bin/clangd-gcc
+
+  cat > ~/.config/clangd/config.yaml <<'EOF'
+CompileFlags:
+  Add:
+    - -std=gnu++17
+    - -nostdinc++
+    - -isystem
+    - /opt/homebrew/include/c++/15
+    - -isystem
+    - /opt/homebrew/include/c++/15/aarch64-apple-darwin25
+    - -isystem
+    - /opt/homebrew/include/c++/15/backward
+EOF
+
+  cat > ~/Library/Preferences/clangd/config.yaml <<'EOF'
+CompileFlags:
+  Add:
+    - -std=gnu++17
+    - -nostdinc++
+    - -isystem
+    - /opt/homebrew/include/c++/15
+    - -isystem
+    - /opt/homebrew/include/c++/15/aarch64-apple-darwin25
+    - -isystem
+    - /opt/homebrew/include/c++/15/backward
+EOF
+}
+
+install_macos_cpp_toolchain() {
   if [[ "$OS" != "macos" ]]; then
     return
   fi
 
   install_pkg gcc g++-15
-
-  local source_header=""
-  source_header="$(find /opt/homebrew/opt/gcc/include/c++ -path '*/bits/stdc++.h' | head -n 1)"
-
-  if [[ -z "$source_header" ]]; then
-    log "Homebrew GCC bits/stdc++.h not found, skip Command Line Tools header bridge." "$magenta"
-    return
-  fi
-
-  local target_base_dir="/Library/Developer/CommandLineTools/usr/include"
-  local target_dir="${target_base_dir}/bits"
-  local target_header="${target_dir}/stdc++.h"
-
-  if sudo test -L "$target_header" && [[ "$(sudo readlink "$target_header")" == "$source_header" ]]; then
-    log "Command Line Tools bits/stdc++.h symlink already configured, skip." "$green"
-    return
-  fi
-
-  log "Configuring Command Line Tools bits/stdc++.h compatibility symlink" "$yellow"
-  sudo mkdir -p "$target_dir"
-  sudo rm -f "$target_header"
-  sudo ln -s "$source_header" "$target_header"
+  configure_macos_cpp_toolchain
+  log "Configured macOS C/C++ toolchain to use Homebrew GCC and clangd with GCC headers." "$green"
 }
 
 install_git() {
   install_pkg git
 
+  local desired_alias_lg="log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+  local desired_email="1752862657@qq.com"
+  local desired_name="buzhibujue"
+  local desired_credential_helper="store"
+
+  if [[ "$(git config --global --get alias.lg || true)" == "$desired_alias_lg" ]] &&
+    [[ "$(git config --global --get user.email || true)" == "$desired_email" ]] &&
+    [[ "$(git config --global --get user.name || true)" == "$desired_name" ]] &&
+    [[ "$(git config --global --get credential.helper || true)" == "$desired_credential_helper" ]]; then
+    log "git already configured, skip." "$green"
+    return
+  fi
+
   log "Setting up git" "$yellow"
-  git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
-  git config --global user.email "1752862657@qq.com"
-  git config --global user.name "buzhibujue"
-  git config --global credential.helper store
+  git config --global alias.lg "$desired_alias_lg"
+  git config --global user.email "$desired_email"
+  git config --global user.name "$desired_name"
+  git config --global credential.helper "$desired_credential_helper"
 }
 
 config_proxy() {
@@ -597,8 +646,8 @@ main() {
   get_ip
   refresh_system_packages
   set_ssh
+  install_macos_cpp_toolchain
   install_vim
-  install_macos_gcc_bits_header
   install_git
   install_zsh
   config_proxy
