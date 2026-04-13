@@ -354,6 +354,41 @@ install_zsh() {
   fi
 }
 
+configure_pyenv_shell() {
+  ensure_line ~/.zshrc '# ---- pyenv ----'
+  ensure_line ~/.zshrc 'export PYENV_ROOT="$HOME/.pyenv"'
+  ensure_line ~/.zshrc 'export PATH="$PYENV_ROOT/bin:$PATH"'
+  ensure_line ~/.zshrc 'eval "$(pyenv init -)"'
+  ensure_line ~/.zshrc 'eval "$(pyenv virtualenv-init -)"'
+}
+
+install_pyenv() {
+  if [[ "$OS" == "macos" ]]; then
+    install_pkg pyenv
+    install_pkg pyenv-virtualenv
+    configure_pyenv_shell
+    return
+  fi
+
+  install_pkg git
+
+  if [[ ! -d "$HOME/.pyenv" ]]; then
+    log "Installing pyenv" "$yellow"
+    git clone https://github.com/pyenv/pyenv.git "$HOME/.pyenv"
+  else
+    log "pyenv already installed, skip." "$green"
+  fi
+
+  if [[ ! -d "$HOME/.pyenv/plugins/pyenv-virtualenv" ]]; then
+    log "Installing pyenv-virtualenv" "$yellow"
+    git clone https://github.com/pyenv/pyenv-virtualenv.git "$HOME/.pyenv/plugins/pyenv-virtualenv"
+  else
+    log "pyenv-virtualenv already installed, skip." "$green"
+  fi
+
+  configure_pyenv_shell
+}
+
 install_vim() {
   local vim_cmd="vim"
 
@@ -650,6 +685,7 @@ main() {
   install_vim
   install_git
   install_zsh
+  install_pyenv
   config_proxy
   install_screen
   install_locate
