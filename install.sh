@@ -268,7 +268,11 @@ linux_pkg_name() {
       ;;
     bat)
       if [[ "$PKG_MANAGER" == "apt" ]]; then
-        echo "batcat"
+        if apt-cache show bat >/dev/null 2>&1; then
+          echo "bat"
+        else
+          echo "batcat"
+        fi
       else
         echo "bat"
       fi
