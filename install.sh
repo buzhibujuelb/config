@@ -399,6 +399,16 @@ install_pyenv() {
   configure_pyenv_shell
 }
 
+install_nodejs() {
+  if [[ "$OS" == "macos" ]]; then
+    install_pkg node npm
+    return
+  fi
+
+  install_pkg nodejs node
+  install_pkg npm
+}
+
 install_vim() {
   local vim_cmd="vim"
 
@@ -697,6 +707,7 @@ main() {
   refresh_system_packages
   set_ssh
   install_macos_cpp_toolchain
+  install_nodejs
   install_vim
   install_git
   install_zsh
