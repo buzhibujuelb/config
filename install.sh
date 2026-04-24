@@ -543,7 +543,11 @@ install_tldr() {
 
   mkdir -p ~/.config/tldr
   local tldr_config="$HOME/.config/tldr/config.toml"
-  tldr --gen-config > "$tldr_config"
+  if tldr --help 2>&1 | grep -q -- '--seed-config'; then
+    tldr --seed-config > "$tldr_config"
+  else
+    tldr --gen-config > "$tldr_config"
+  fi
   replace_in_file "$tldr_config" '^languages = \[\]' 'languages = ["zh"]'
 }
 
