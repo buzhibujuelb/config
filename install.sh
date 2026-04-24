@@ -332,11 +332,13 @@ install_zsh() {
 
   local zsh_custom="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
 
-  if [[ ! -d "$zsh_custom/themes/spaceship-prompt" ]]; then
-    log "Installing spaceship-prompt" "$yellow"
-    git clone https://github.com/denysdovhan/spaceship-prompt.git "$zsh_custom/themes/spaceship-prompt"
+  if [[ "$OS" == "macos" ]]; then
+    if [[ ! -d "$zsh_custom/themes/spaceship-prompt" ]]; then
+      log "Installing spaceship-prompt" "$yellow"
+      git clone https://github.com/denysdovhan/spaceship-prompt.git "$zsh_custom/themes/spaceship-prompt"
+    fi
+    ln -snf "$zsh_custom/themes/spaceship-prompt/spaceship.zsh-theme" "$zsh_custom/themes/spaceship.zsh-theme"
   fi
-  ln -snf "$zsh_custom/themes/spaceship-prompt/spaceship.zsh-theme" "$zsh_custom/themes/spaceship.zsh-theme"
 
   if [[ ! -d "$zsh_custom/plugins/zsh-autosuggestions" ]]; then
     log "Installing zsh-autosuggestions" "$yellow"
@@ -352,7 +354,11 @@ install_zsh() {
     cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
   fi
 
-  replace_in_file ~/.zshrc 'ZSH_THEME="robbyrussell"' 'ZSH_THEME="spaceship"'
+  if [[ "$OS" == "macos" ]]; then
+    replace_in_file ~/.zshrc 'ZSH_THEME="robbyrussell"' 'ZSH_THEME="spaceship"'
+  else
+    replace_in_file ~/.zshrc 'ZSH_THEME="spaceship"' 'ZSH_THEME="robbyrussell"'
+  fi
   replace_in_file ~/.zshrc 'plugins=(git)' 'plugins=(git extract emoji z zsh-autosuggestions zsh-syntax-highlighting)'
 
   ensure_line ~/.zshrc 'bindkey \^U backward-kill-line'
