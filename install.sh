@@ -542,8 +542,9 @@ install_tldr() {
   fi
 
   mkdir -p ~/.config/tldr
-  tldr --gen-config > "$(tldr --config-path)"
-  replace_in_file "$(tldr --config-path)" '^languages = \[\]' 'languages = ["zh"]'
+  local tldr_config="$HOME/.config/tldr/config.toml"
+  tldr --gen-config > "$tldr_config"
+  replace_in_file "$tldr_config" '^languages = \[\]' 'languages = ["zh"]'
 }
 
 set_locale_linux() {
