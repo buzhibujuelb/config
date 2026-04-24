@@ -551,12 +551,19 @@ install_tldr() {
     return
   fi
 
-  mkdir -p ~/.config/tldr
-  local tldr_config="$HOME/.config/tldr/config.toml"
+  local tldr_config_dir="$HOME/.config/tldr"
   if tldr --help 2>&1 | grep -q -- '--seed-config'; then
-    tldr --seed-config > "$tldr_config"
-  else
-    tldr --gen-config > "$tldr_config"
+    tldr_config_dir="$HOME/.config/tealdeer"
+  fi
+
+  mkdir -p "$tldr_config_dir"
+  local tldr_config="$tldr_config_dir/config.toml"
+  if [[ ! -f "$tldr_config" ]]; then
+    if tldr --help 2>&1 | grep -q -- '--seed-config'; then
+      tldr --seed-config >/dev/null
+    else
+      tldr --gen-config > "$tldr_config"
+    fi
   fi
   replace_in_file "$tldr_config" '^languages = \[\]' 'languages = ["zh"]'
 }
