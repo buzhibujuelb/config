@@ -207,7 +207,13 @@ linux_pkg_name() {
       ;;
     vim_gui)
       if [[ "$PKG_MANAGER" == "apt" ]]; then
-        echo "vim-gtk"
+        if apt-cache show vim-gtk3 >/dev/null 2>&1; then
+          echo "vim-gtk3"
+        elif apt-cache show vim-athena >/dev/null 2>&1; then
+          echo "vim-athena"
+        else
+          echo "vim"
+        fi
       else
         echo "vim-X11"
       fi
