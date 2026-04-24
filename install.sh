@@ -357,6 +357,12 @@ install_zsh() {
 
   ensure_line ~/.zshrc 'bindkey \^U backward-kill-line'
   ensure_line ~/.zshrc 'setopt nonomatch'
+  ensure_line ~/.zshrc 'zstyle ":omz:update" mode disabled'
+  ensure_line ~/.zshrc 'DISABLE_UNTRACKED_FILES_DIRTY="true"'
+  ensure_line ~/.zshrc 'SPACESHIP_PROMPT_ORDER=(user host dir git line_sep char)'
+  ensure_line ~/.zshrc 'SPACESHIP_RPROMPT_ORDER=()'
+  ensure_line ~/.zshrc 'SPACESHIP_GIT_STATUS_SHOW=false'
+  ensure_line ~/.zshrc 'SPACESHIP_EXEC_TIME_SHOW=false'
 
   if [[ "$OS" == "macos" ]]; then
     ensure_line ~/.zshrc 'SPACESHIP_USER_SHOW=always'
