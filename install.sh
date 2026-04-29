@@ -314,6 +314,21 @@ set_ssh() {
   chmod 600 ~/.ssh/authorized_keys ~/.ssh/config 2>/dev/null || true
 }
 
+set_ghostty() {
+  if [[ "$OS" != "macos" ]]; then
+    return
+  fi
+
+  local ghostty_config_dir="$HOME/.config/ghostty"
+  local ghostty_config="$ghostty_config_dir/config"
+
+  mkdir -p "$ghostty_config_dir"
+  if [[ ! -f "$ghostty_config" ]]; then
+    log "设置 Ghostty config" "$yellow"
+    cp "$SCRIPT_DIR/data/ghostty_config" "$ghostty_config"
+  fi
+}
+
 install_zsh() {
   install_pkg zsh
 
@@ -725,6 +740,7 @@ main() {
   get_ip
   refresh_system_packages
   set_ssh
+  set_ghostty
   install_macos_cpp_toolchain
   install_nodejs
   install_vim

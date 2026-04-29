@@ -1,9 +1,26 @@
-Host us
-  User bei
-  Hostname us.buzhibujue.cf
-  ForwardX11 yes
+HostKeyAlgorithms +ssh-rsa
+PubkeyAcceptedKeyTypes +ssh-rsa
 
-Host gz
+Host us
+  HostName 20.55.128.130
   User bei
-  Hostname gz.buzhibujue.cf
-  ForwardX11 yes
+  AddressFamily inet
+  ForwardX11 no
+  IdentityFile ~/.ssh/id_rsa
+  IdentitiesOnly yes
+
+Host cnss
+  HostName 10.12.65.2
+  User bei
+  ServerAliveInterval 60
+
+Host os
+  HostName 202.115.16.218
+  User s2021090922011
+
+Host home
+  HostName 192.168.6.1
+  User root
+
+Host *
+  SetEnv TERM=xterm-256color
